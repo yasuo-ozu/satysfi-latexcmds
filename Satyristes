@@ -1,0 +1,39 @@
+;; For Satyrographos 0.0.2 series
+(version 0.0.2)
+
+(library
+  (name "latexcmds")
+  (version "0.1.0")
+  (sources
+    (
+     (package "latexcmds.satyh" "./src/latexcmds.satyh")
+    )
+  )
+  (opam "satysfi-latexcmds.opam")
+  (dependencies
+    ()
+  )
+  (compatibility ())
+)
+
+(libraryDoc
+  (name "latexcmds-doc")
+  (version "0.1.0")
+  (workingDirectory "./doc/")
+  (build
+    (
+      (satysfi "latexcmds-doc.saty" "-o" "latexcmds-doc.pdf")
+    )
+  )
+  (sources
+    (
+      (doc "latexcmds-doc.pdf" "./doc/latexcmds-doc.pdf")
+    )
+  )
+  (opam "satysfi-latexcmds-doc.opam")
+  (dependencies
+    (
+    )
+  )
+)
+;; vim: set expandtab ts=2 :

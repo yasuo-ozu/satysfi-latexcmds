@@ -1,0 +1,353 @@
+@require: stdjareport
+@require: itemize
+@require: annot
+@require: color
+@require: math
+@require: color
+
+@import: ../src/latexcmds
+
+let-inline \code text = {
+    \mbox{\code(text);}
+}
+
+open LatexCmds in
+document (|
+  title = {LatexCmds パッケージ};
+  author = {The LatexCmds Contributors};
+|) '<
+    +p {
+        本パッケージは\LaTeX;に類似するコマンドを\SATySFi;上で提供するものである。
+    }
+
+    +chapter {インストール} <
+        +p {
+            本パッケージはSatyrographos等を用いてインストールしたあと、
+        }
+        +code(```
+@require: latexcmds/latexcmds
+open LatexCmds in
+
+document (|
+  title = {LatexCmds パッケージ};
+  author = {The LatexCmds Contributors};
+|) '<
+>
+```);
++p {
+    のように使用する。もしどうしても\code(`open LatexCmds in`);をしたくない場合(グローバルな名前空間にLatexCmds提供のコマンドを公開したくない場合)、コマンド利用時に\code(`\LatexCmds.clearpage;`);等と名前空間で修飾すればよい。
+}
+    >
+
+    +chapter {ページ及び行分割} <
+        +p {
+            ページ分割には\code(`+clearpage;`);, \code(`\clearpage;`);, \code(`+pagebreak;`);, 
+            \code(`\pagebreak;`);, \code(`+newpage;`);, \code(`\newpage;`);が利用できる。(どれも同じ効果)
+        }
+        +p {
+            \code(`+`);で始まるコマンドは\code(`<`);〜\code(`>`);で囲まれた中(縦モード), 
+            \code(`\`);で始まるコマンドは\code(`{`);〜\code(`}`);で囲まれた中(横モード)で使用できる。
+            いずれにせよ、最後の\code(`;`);を忘れないでほしい。
+        }
+        +p {
+            \SATySFi;は\LaTeX;の行分割コマンド(\code(`\\`);)を提供しないため、通常改行を入れたい場合は段落(\code(`+p {  }`);)を分けることになる。しかし、どうしても段落中で改行したい時のために\code(`\linebreak;`);コマンドを用意している。
+            このように\linebreak;使い\linebreak;すぎると\linebreak;読みにくく\linebreak;なるため\linebreak;注意すること。
+        }
+    >
+     +chapter {スペース} <
+         +p {
+             横モード、縦モード、数式モード中でそれぞれ\code(`\hspace(1pt);`);, \code(`\vspace(1pt);`);, \code(`\mspace(1pt);`);のように使用できる。spaceの代わりにskipとしてもよい。セミコロンや括弧は省略できない。
+         }
+         +p {
+             また、現在の文字サイズを基準とした倍率を指定するスペースコマンド\code(`\rquad`);, \code(`\mrquad`);もある。例えば\code(`\rquad(1.5);`);とすれば文字サイズの1.5倍の空白が作成される。
+         }
+         +p {
+             さらに、長さを指定せずに使える以下のコマンドも用意されている。
+         }
+         +listing {
+            * \code(`\quad;`);  ${\cdots}文字サイズの1.0倍の空白
+            * \code(`\hquad;`); ${\cdots}文字サイズの0.5倍の空白
+            * \code(`\qquad;`); ${\cdots}文字サイズの2.0倍の空白
+            * \code(`\mquad;`); ${\cdots}文字サイズの1.0倍の空白(数式モード)
+            * \code(`\mhquad;`);${\cdots}文字サイズの0.5倍の空白(数式モード)
+            * \code(`\mqquad;`);${\cdots}文字サイズの2.0倍の空白(数式モード)
+         }
+     >
+
+     +chapter {ボックス} <
+         +p {
+             \code(`\mbox{ ... }`);は${\ldots}の内容が行分割されるのを防ぐ。\code(`\phantom{ ... }`);は${\ldots}の内容を出力しないが、それを出力した場合と同じ大きさの空白を作成する。
+         }
+         +p {
+             \code(`\makebox`);や\code(`\framebox`);を用いると、幅を固定し中身を折り返すことができる。例えば、
+         }
+         +code(```\framebox(5cm){あいうえおかきくけこさしすせそたちつてと}```);
+         +p {
+             とすれば、\framebox(4cm){あいうえおかきくけこさしすせそたちつてと}となる。\code(`\makebox`);と\code(`\framebox`);の違いは、枠が付かないか付くかである。またボックスの行中での縦位置も指定することができる。例えば、
+         }
+         +code(```\framebox?:(Bottom)(5cm){あいうえおかきくけこさしすせそたちつてと}```);
+         +p {
+             とすれば、\framebox?:(Bottom)(4cm){あいうえおかきくけこさしすせそたちつてと}となる。先の例との違いがわかるだろうか？
+         }
+         +p {
+             横幅を指定したボックスの中に、横モードの文章だけでなく縦モードの段落を入れたくなることもある。この当りを\LaTeX;でやろうとすると色々アレなのであるが、\SATySFi;では幸いなことに簡単に実現できる。例えば
+         }
+         +code(```
+         \parbox(5cm)<
+            +p {あいうえおかきくけこさしすせそたちつてと}
+         >```);
+         +p {
+             とすれば、\parbox(5cm)< +p {あいうえおかきくけこさしすせそたちつてと} >となるが、わかりにくいので
+         }
+         +code(```
+         \fbox{\parbox(5cm)<
+            +p {あいうえおかきくけこさしすせそたちつてと}
+         >}```);
+         +p {
+             とすれば、\fbox{\parbox(5cm)< +p {あいうえおかきくけこさしすせそたちつてと} >}となる。先程と同様、\code(`Bottom`);等のキーワードを指定することも可能である。例えば
+         }
+         +code(```
+         \fbox{\parbox?:(Bottom)(5cm)<
+            +p {あいうえおかきくけこさしすせそたちつてと}
+         >}```);
+         +p {
+             とすれば、\fbox{\parbox?:(Bottom)(5cm)< +p {あいうえおかきくけこさしすせそたちつてと} >}となる。
+         }
+         +p {
+             ボックスを変形することもできる。例えば
+         }
+         +code(```\resizebox?:(3cm)?:(3cm){アーッ!!}```);
+         +p {
+             とすれば、\resizebox?:(3cm)?:(3cm){アーッ!!}となる。指定しているのは言うまでもなく横方向の高さと縦方向の高さである。
+         }
+         +code(```\resizebox?:(3cm){アーッ!!}```);
+         +p {や}
+         +code(```\resizebox?*?:(3cm){アーッ!!}```);
+         +p {
+             とすれば、それぞれ\resizebox?:(3cm){アーッ!!}や\resizebox?*?:(3cm){アーッ!!}のように、横方向のみ、縦方向のみの大きさを指定することもできる。長さではなく倍率を指定する方法もあり、その場合は
+         }
+         +code(```\scalebox?:(3.0)?:(3.0){Ouch!!}```);
+         +p {
+             とすれば\scalebox?:(3.0)?:(3.0){Ouch!!}となる。3.0の.0を忘れると整数とみなされコンパイルエラーになるため注意。
+         }
+         +p {
+             ボックスを本来の位置からずらして描画するには\code(`\movebox`);を用いる。例えば、
+         }
+         +code(```\movebox(2cm)(1cm){ここだよ}```);
+         +p {
+             とすれば\movebox(1cm)(0.5cm){ここだよ}となり、読みにくい文が完成する。
+         }
+         +p {
+             \code(`\rotatebox`);を用いればボックスを回転させることができる。角度は弧度法で指定し
+         }
+         +code(```
+        \rotatebox(0.5){おむすび}\rotatebox(1.0){ころりん}\rotatebox(1.5){すっとん}\rotatebox(2.0){とん}\rotatebox(2.5){ころころ}\rotatebox(3.0){ころりん}\rotatebox(3.5){すっとん}\rotatebox(4.0){とん}
+         ```);
+         +p {
+            とすれば\rotatebox(0.5){おむすび}\rotatebox(1.0){ころりん}\rotatebox(1.5){すっとん}\rotatebox(2.0){とん}\rotatebox(2.5){ころころ}\rotatebox(3.0){ころりん}\rotatebox(3.5){すっとん}\rotatebox(4.0){とん}となる。角度として負の値を指定することもできるが、その場合は\code(`\rotatebox(0.0-.0.57)`);のように引き算の形で指定する必要がある。
+         }
+
+         +p {
+             \SATySFi;-LatexCmdsはボックスの装飾を行うためのコマンドを提供している。例えば先程も紹介した\code(`\fbox`);の他、以下のものが使用できる。
+         }
+         +listing {
+             * \code(`\fbox{こんにちは}`);${\rightarrow}\fbox{こんにちは}
+             * \code(`\doublebox{こんにちは}`);${\rightarrow}\doublebox{こんにちは}
+             * \code(`\ovalbox{こんにちは}`);${\rightarrow}\ovalbox{こんにちは}
+             * \code(`\shadowbox{こんにちは}`);${\rightarrow}\shadowbox{こんにちは}
+         }
+         +p {
+             ただしこれらのボックスは途中で行分割されうることに注意。また、これらのコマンドには追加のパラメータを指定できる。例えば\code(`\fbox`);の場合、
+         }
+         +code(```
+         \fbox ?:(l) ?:(p) ?:(scolor) ?:(fcolor)
+         ```);
+         +p {
+             となっている。ここで${l}は線の太さ、${p}は余白の大きさ、${scolor}は線の色、${fcolor}は塗りの色である。\code(`\doublebox`); \code(`\ovalbox`);も同様である。また、\code(`\shadowbox`);の場合は以下のようになる。
+         }
+         +code(```
+         \shadowbox ?:(l) ?:(p) ?:(scolor) ?:(fcolor) ?:(drop) ?:(dropcolor)
+         ```);
+         +p {
+             ここで最初の4つのパラメータは先述のとおりで、${drop}は影の大きさ(はみ出す距離)、${dropcolor}は影の色である。なお、色の指定にはプリアンブル部で\code(`@require: color`);が必要である。
+         }
+         +p {
+             実際にこれらのパラメータを組み合わせると、以下のように様々なデザインの箱をつくることができる。
+         }
+         +code(```
+         +listing {
+             * \fbox ?:(2pt) ?:(10pt) ?:(Color.blue) ?:(RGB(0.0, 1.0, 0.5)) {こんにちは}
+             * \doublebox ?:(2pt) ?:(10pt) ?:(Color.blue) ?:(RGB(0.0, 1.0, 0.5)) {こんにちは}
+             * \ovalbox ?:(2pt) ?:(10pt) ?:(Color.blue) ?:(RGB(0.0, 1.0, 0.5)) {こんにちは}
+             * \shadowbox ?:(2pt) ?:(10pt) ?:(Color.blue) ?:(RGB(0.0, 1.0, 0.5)) ?:(10pt) ?:(Color.red) {こんにちは}
+         }
+         ```);
+         +listing {
+             * \fbox ?:(2pt) ?:(10pt) ?:(Color.blue) ?:(RGB(0.0, 1.0, 0.5)) {こんにちは}
+             * \doublebox ?:(2pt) ?:(10pt) ?:(Color.blue) ?:(RGB(0.0, 1.0, 0.5)) {こんにちは}
+             * \ovalbox ?:(2pt) ?:(10pt) ?:(Color.blue) ?:(RGB(0.0, 1.0, 0.5)) {こんにちは}
+             * \shadowbox ?:(2pt) ?:(10pt) ?:(Color.blue) ?:(RGB(0.0, 1.0, 0.5)) ?:(10pt) ?:(Color.red) {こんにちは}
+         }
+         +p {
+             行中ではなく縦モードで枠を使いたいこともあるだろう。そんな時は\code(`\screen`);及び\code(`\shadowbox`);を使用できる。例えば
+         }
+         +code(```
+         +screen<
+             +p { 学会して　迷走迷走して }
+             +p { どしたん話聞こか!?  }
+         >
+         ```);
+         +screen<
+             +p {
+                学会して　迷走迷走して
+             }
+             +p {
+                どしたん話聞こか!?
+             }
+         >
+         +p {
+             となる。タイトルをつける場合は
+         }
+         +code(```
+         +shadowbox?:({「勇気100\%」 の調べで唄おう})<
+             +p { 学会して　迷走迷走して }
+             +p { どしたん話聞こか!?  }
+         >
+         ```);
+         +shadowbox?:({「勇気100\%」 の調べで唄おう})<
+             +p {
+                学会して　迷走迷走して
+             }
+             +p {
+                どしたん話聞こか!?
+             }
+         >
+         +p {
+             ちなみに、これらのボックスの途中でページ分割される可能性があるので注意。
+         }
+         +p {
+             行中での装飾枠と同様、これらの段落中の装飾枠もパラメータによって様々にカスタマイズできる。その項目は行中版とほぼ同じだが
+         }
+         +code(```
+         +screen ?:(it) ?:(va) ?:(l) ?:(p) ?:(scolor) ?:(fcolor)
+         +shadowbox ?:(it) ?:(va) ?:(l) ?:(p) ?:(scolor) ?:(fcolor) ?:(drop) ?:(dropcolor)
+         ```);
+         +p {
+             ${it}はタイトル、${va}はタイトルの水平方向の位置で\code(`HLeft | HCenter | HRight`);などが指定できる。${l}は線の太さ、${p}は余白、${scolor}は線の色、${fcolor}は塗りの色である。また、${drop}は影のはみ出し、${dropcolor}は影の色である。
+         }
+         +p {
+             これらを駆使すれば、たとえば以下のようになる。
+         }
+         +code(```
+         +shadowbox ?:({万年筆はいいぞ}) ?:(HRight) ?:(3pt) ?:(20pt) ?:(RGB(0.3,0.3,0.3)) ?:(RGB(0.9,0.9,0.9)) ?* ?:(RGB(0.0, 0.5,0.0)) <
+             +p { 万年筆の良いところは、筆跡を見ただけで一瞬でそれと分かるところ。 }
+             +p { ボールペンの微妙なところは、筆跡を見ただけで一瞬でそれとバレるところ。 }
+         >
+         ```);
+         +shadowbox ?:({万年筆はいいぞ}) ?:(HRight) ?:(3pt) ?:(20pt) ?:(RGB(0.3,0.3,0.3)) ?:(RGB(0.9,0.9,0.9)) ?* ?:(RGB(0.0, 0.5,0.0)) <
+             +p { 万年筆の良いところは、筆跡を見ただけで一瞬でそれと分かるところ。 }
+             +p { ボールペンの微妙なところは、筆跡を見ただけで一瞬でそれとバレるところ。 }
+         >
+     >
+     +chapter{レイアウト} <
+         +p {
+             文を左、右、中央に配置する場合、\code(`+flushleft`);, \code(`+flushright`);, \code(`+centering`);を使う。ただし、\SATySFi;の制約により、以下のように中身が複数行にわたる場合はただしく配置されない場合がある。
+         }
+         +code(```
+         +centering {
+             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lobortis nibh nec elit maximus, at mollis orci luctus. Suspendisse eu tellus diam. Curabitur nisl nibh, tempor non arcu vitae, ullamcorper auctor elit.
+         }
+         ```);
+         +centering {
+             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lobortis nibh nec elit maximus, at mollis orci luctus. Suspendisse eu tellus diam. Curabitur nisl nibh, tempor non arcu vitae, ullamcorper auctor elit.
+         }
+         +p {この場合は、若干面倒であるが\code(`+centerings`);(\code(`+flushlefts`);,\code(`+flushrights`);)を用いて手動で行を分割することで正しい結果が得られる。}
+         +code(```
+         +centerings {
+             | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lobortis nibh
+             | nec elit maximus, at mollis orci luctus. Suspendisse eu tellus diam. Curabitur nisl
+             | nibh, tempor non arcu vitae, ullamcorper auctor elit.
+             |}
+         ```);
+         +centerings {
+             | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lobortis nibh
+             | nec elit maximus, at mollis orci luctus. Suspendisse eu tellus diam. Curabitur nisl
+             | nibh, tempor non arcu vitae, ullamcorper auctor elit.
+             |}
+         +p {
+             数式中で文字や式を上下に配置する場合、\code(`\overset`);, \code(`\underset`);が使用できる。たとえば、
+         }
+         +code(```
+         ${i\hbar\frac{\partial}{\partial t}\Psi = \sqbracket{-\underset{\text!{運動エネルギーを表す}}{\frac{1}{2m}\frac{\partial^2}{\partial x^2}}+V\paren{x}} \Psi}
+         ```);
+         +p { ${i\hbar\frac{\partial}{\partial t}\Psi = \sqbracket{-\underset{\text!{運動エネルギーを表す}}{\frac{1}{2m}\frac{\partial^2}{\partial x^2}}+V\paren{x}} \Psi} } 
+         +p {
+             となる。ただし、これらのコマンド中では行分割されないことに注意。また、数式モードではなく横モードで同じ機能を使いたい場合\code(`\normal-overset`);, \code(`\normal-underset`);を用いる。例えば
+         }
+         +code(```
+        \normal-overset{そんなところで}{閑話休題}
+         ```);
+         +p {
+            を表示すれば、\normal-overset{そんなところで}{閑話休題}となる。ただし、文字にルビを振りたい場合は\code(`\normal-overset`);ではなく、\code(`satysfi-ruby`);などのパッケージを用いるほうがよいだろう。
+         }
+         +p {
+             \code(`\underbrace`);等を用いれば数式の上下に括弧を書くこともできる。例えば、
+         }
+         +code(```
+        ${\underbrace?:{2N + 1}{-N, -N + 1, \ldots, 0, \ldots, N}}
+         ```);
+         +p {
+             とすれば、${\underbrace?:{2N + 1}{-N, -N + 1, \ldots, 0, \ldots, N}}となる。\code(`\underbrace`);の他にも、\code(`\overbrace`);, \code(`\underparen`);, \code(`\overparen`);, \code(`\underangle`); \code(`\overangle`);, \code(`\undersqbracket`);, \code(`\oversqbracket`);が提供されている。また数式モードではなく横モードで使いたい場合、\code(`\normal-overbrace`);等を使えばよい。
+         }
+         +p {
+             これらのコマンドは簡単なカスタマイズ機能をサポートしている。例えば\code(`\overparen`);の場合
+         }
+         +code(```
+         \overparen ?:it0 ?:color ?:r
+         ```);
+         +p {
+             となっている。ここで${it0}は括弧の上に表示するサブテキストであり、${color}は括弧の色である。また${r}はサブテキストのフォントサイズと現在のフォントサイズの比率で、デフォルトで${0.5}である。例えば、
+         }
+         +code(```
+         ${\overbrace?:{\bigcirc\ ..\ \bigcirc}?:!(Color.red)?:!(1.0){\underbrace?*?:!(Color.red){-------}}}
+         ```);
+         +p {とすれば${\overbrace?:{\bigcirc\ ..\ \bigcirc}?:!(Color.red)?:!(1.0){\underbrace?*?:!(Color.red){-------}}}となる。}
+     >
+     +chapter{フォント}<
+         +p {
+             \code(`\fontsize`);, \code(`+fontsize`);, \code(`\mfontsize`);を用いると、それぞれ横モード中、縦モード中、数式モード中で文字サイズを変更することができる。また、\code(`\rfontsize`);や\code(`\mrfontsize`);を用いると、現在の文字サイズとの比で文字サイズを指定することができる。
+         }
+         +p {
+             \code(`\textcolor`);, \code(`+textcolor`);, \code(`\mtextcolor`);を用いると、それぞれ横モード中、縦モード中、数式モード中で文字色を変更することができる。また、\code(`\colorbox`);, \code(`\mcolorbox`);を用いるとテキストの背景色を指定できる。例えば、
+         }
+         +code(```
+         +fontsize(20pt) <
+             +textcolor(Color.blue) <
+                 +p {
+                     \colorbox?:(5pt)(RGB(0.8,0.8,0.8)){あ\rfontsize(1.2){い\rfontsize(1.2){う\textcolor(Color.red){え}\colorbox(RGB(0.5,1.0,0.5)){お}}}}
+                 }
+             >
+         >
+         ```);
+         +p {とすると、}
+         +fontsize(20pt) <
+             +textcolor(Color.blue) <
+                 +p {
+                     \colorbox?:(5pt)(RGB(0.8,0.8,0.8)){あ\rfontsize(1.2){い\rfontsize(1.2){う\textcolor(Color.red){え}\colorbox(RGB(0.5,1.0,0.5)){お}}}}
+                 }
+             >
+         >
+         +p {となる。}
+         +p {
+             \SATySFi;では分数の分母と分子が偏っている場合、例えば
+             ${x' = \paren{x-vt}\paren{\frac{1}{1-\paren{\frac{v}{c}}^2}}}
+             のように括弧内の縦位置がアンバランスになることがある。この場合、\code(`\math-middle`);コマンドを用いて
+         }
+         +code(```
+         ${x' = \paren{x-vt}\paren{\math-middle{\frac{1}{1-\paren{\frac{v}{c}}^2}}}}
+         ```);
+         +p {
+             とすれば、${x' = \paren{x-vt}\paren{\math-middle{\frac{1}{1-\paren{\frac{v}{c}}^2}}}}となり、縦位置がバランスされる。
+         }
+     >
+>
