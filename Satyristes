@@ -3,7 +3,7 @@
 
 (library
   (name "latexcmds")
-  (version "0.1.0")
+  (version "0.1.1")
   (sources
     (
      (package "latexcmds.satyh" "./src/latexcmds.satyh")
@@ -18,7 +18,7 @@
 
 (libraryDoc
   (name "latexcmds-doc")
-  (version "0.1.0")
+  (version "0.1.1")
   (workingDirectory "./doc/")
   (build
     (

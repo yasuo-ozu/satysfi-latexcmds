@@ -248,6 +248,12 @@ document (|
              +p { 万年筆の良いところは、筆跡を見ただけで一瞬でそれと分かるところ。 }
              +p { ボールペンの微妙なところは、筆跡を見ただけで一瞬でそれとバレるところ。 }
          >
+         +p {
+             \code(`\strut`);や\code(`\mstrut`);を使うと、インラインテキスト及び数式中で高さが\code(`0.7\baselineskip`);, 深さが\code(`0.3\baselineskip`);の透明な箱を置くことができる。また、\code(`\rule ?:r w h`);を用いると、幅\code(`w`);, 高さ\code(`h`);で\code(`r`);だけ持ち上げた黒塗りの箱を置くことができる。
+         }
+         +p {
+            たとえば \code(`\rule ?:(1mm)(5mm)(2cm);`);とすると\rule ?:(1mm)(5mm)(2cm);となる。
+         }
      >
      +chapter{レイアウト} <
          +p {
@@ -348,6 +354,17 @@ document (|
          ```);
          +p {
              とすれば、${x' = \paren{x-vt}\paren{\math-middle{\frac{1}{1-\paren{\frac{v}{c}}^2}}}}となり、縦位置がバランスされる。
+         }
+     >
+     +chapter{シンボル} <
+         +p {
+             \SATySFi;で数式を扱う時は\code(`satysfi-azmath`);等のパッケージを使うことが推奨されるが、こういった有名パッケージに含まれない特殊文字を使いたくなることがある。\SATySFi;-LatexCmds では以下のシンボルをサポートしている。
+         }
+         +listing {
+             * \code(`\hbar`); ${\cdots \hbar}
+             * \code(`\varphi`); ${\cdots \varphi}
+             * \code(`\normalphi`); ${\cdots \normalphi}
+             * \code(`\sumT`); ${\cdots \sumT} (displaystyle版の和記号。\code(`\sumT_a^b`);と書くと${\sumT_a^b}となる。一方\code(`\sum_a^b`);と書くと${\sum_a^b}となる。)
          }
      >
 >

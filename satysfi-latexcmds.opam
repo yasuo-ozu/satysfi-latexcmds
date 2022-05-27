@@ -1,6 +1,6 @@
 opam-version: "2.0"
 name: "satysfi-latexcmds"
-version: "0.1.0"
+version: "0.1.1"
 synopsis: "LaTeX-like commands in SATySFi"
 description: """LaTeX-like commands in SATySFi"""
 
@@ -12,7 +12,7 @@ bug-reports: "https://github.com/yasuo-ozu/satysfi-latexcmds/issues"
 dev-repo: "git+https://github.com/yasuo-ozu/satysfi-latexcmds.git"
 
 depends: [
-  "satysfi" {>= "0.0.5" & < "0.0.7"}
+  "satysfi" {>= "0.0.5" & < "0.1.0"}
   "satysfi-dist"
   "satyrographos" {>= "0.0.2.6" & < "0.0.3"}
 ]
