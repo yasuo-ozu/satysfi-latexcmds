@@ -49,6 +49,10 @@ module LatexCmds : sig
 	direct \normalphi : [] math-cmd
 	direct \varphi : [] math-cmd
 	direct \sumT : [] math-cmd
+	direct \quote-sl : [] inline-cmd
+    direct \quote-sr : [] inline-cmd
+    direct \quote-dl : [] inline-cmd
+    direct \quote-dr : [] inline-cmd
 
 	% box
 	direct \mbox : [inline-text] inline-cmd
@@ -960,6 +964,11 @@ end = struct
 			draw-text (x, y -' (size *' 0.15)) ib
 		])
 	))
+
+	let-inline ctx \quote-sl = string-unexplode [0x2018] |> embed-string |> read-inline ctx
+	let-inline ctx \quote-sr = string-unexplode [0x2019] |> embed-string |> read-inline ctx
+	let-inline ctx \quote-dl = string-unexplode [0x201C] |> embed-string |> read-inline ctx
+	let-inline ctx \quote-dr = string-unexplode [0x201D] |> embed-string |> read-inline ctx
 	
 	let-inline ctx \colorbox ?:popt color it =
 		let ib = read-inline ctx it in

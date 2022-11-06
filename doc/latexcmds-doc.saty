@@ -396,6 +396,8 @@ document (|
              * \code(`\varphi`); ${\cdots \varphi}
              * \code(`\normalphi`); ${\cdots \normalphi}
              * \code(`\sumT`); ${\cdots \sumT} (displaystyle版の和記号。\code(`\sumT_a^b`);と書くと${\sumT_a^b}となる。一方\code(`\sum_a^b`);と書くと${\sum_a^b}となる。)
+             * \code(`\quote-sl; hello \quote-sr;`); ${\cdots} \quote-sl; hello \quote-sr;
+             * \code(`\quote-dl; hello \quote-dr`); ${\cdots} \quote-dl; hello \quote-dr;
          }
      >
 >
