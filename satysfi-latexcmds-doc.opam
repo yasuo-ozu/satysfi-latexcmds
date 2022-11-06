@@ -1,6 +1,6 @@
 opam-version: "2.0"
 name: "satysfi-latexcmds-doc"
-version: "0.1.1"
+version: "0.1.2"
 synopsis: "LaTeX-like commands in SATySFi"
 description: """LaTeX-like commands in SATySFi"""
 
