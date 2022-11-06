@@ -17,6 +17,8 @@ module LatexCmds : sig
 	direct \pagebreak : [] inline-cmd
 	direct +newpage : [] block-cmd
 	direct \newpage : [] inline-cmd
+	direct \nobreak : [inline-text] inline-cmd
+	direct +nobreak : [block-text] block-cmd
 	
 	% spacing
 	%direct \hfill : [] inline-cmd
@@ -159,6 +161,16 @@ end = struct
 	let-inline ctx \newpage   = inline-fil ++ (embed-block-breakable ctx clear-page)
 	let-inline ctx \pagebreak = inline-fil ++ (embed-block-breakable ctx clear-page)
 
+	let-inline ctx \nobreak it =
+		let pads = (0pt, 0pt, 0pt, 0pt) in
+		let decof (x, y) w h d = [] in
+		let ib = read-inline ctx it in
+		inline-frame-inner pads decof ib
+
+	let-block ctx +nobreak bt =
+		let l = get-text-width ctx in
+		let ib = embed-block-top ctx l (fun ctx -> (read-block ctx bt)) in
+		line-break true true ctx ib
 
 	let-inline ctx \hfill = inline-fil
 	let-inline ctx \hspace len = inline-skip len
